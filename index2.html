@@ -1,0 +1,92 @@
+<html>
+<script>
+function vald() {
+var emaiil = document.forms["myform"]["email"].value;
+var password = document.forms["myform"]["pwd"].value;
+if (emaiil == null || emaiil == "") {
+alert("Please enter the email.");
+return false;
+}
+if (password == null || password == "") {
+alert("Please enter the password.");
+return false;
+}
+}
+</script>
+<head>
+<style type="text/css">
+ input{
+ border:1px solid olive;
+ border-radius:5px;
+ }
+ h1{
+  color:darkgreen;
+  font-size:22px;
+  text-align:center;
+ }
+</style>
+
+
+</head>
+<body>
+<h1>Login<h1>
+<form name="myform" action='#' onsubmit=" return vald()" method='post' >
+<table cellspacing='5' align='center'>
+<tr><td>Email:</td><td><input type='text' name='email'/></td></tr>
+<tr><td>Password:</td><td><input type='password' name='pwd'/></td></tr>
+<tr><td></td><td><input type='submit' name='submit' value='Submit' /></td></tr>
+
+</table>
+
+</form>
+<form name="myform2" action='#'  method='post' >
+<tr><td></td><td><input type='submit' name='reg' value='register'  /></td></tr>
+</form>
+
+
+
+
+<?php
+ if(isset($_POST['reg']))
+{
+	 header('location:registeration.php');
+}
+session_start();
+if(isset($_POST['submit']))
+{
+ $link=mysqli_connect('localhost','root','',"registrations") or die(mysql_error());
+ $email=$_POST['email'];
+ $pwd=$_POST['pwd'];
+ if($email!=''&&$pwd!='')
+ {
+   $query=mysqli_query($link,"select * from users where email='".$email."' and password='".$pwd."'") or die(mysql_error());
+  
+   $user = mysqli_fetch_assoc($query);
+   if($user)
+   {
+  $usernamegot=$user['name'];
+    $_SESSION['name']=$usernamegot;
+      $_SESSION['email']=$email;
+    header('location:welcome.php');
+	
+	
+	
+
+ 
+   }
+   else
+   {
+    echo'You entered email or password is incorrect';
+   }
+ }
+ else
+ {
+  
+ }
+}
+
+
+?>
+</body>
+
+</html>
